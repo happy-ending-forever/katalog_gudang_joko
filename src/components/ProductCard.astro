@@ -1,5 +1,5 @@
 ---
-import { Heart, Star } from "lucide-astro";
+import { Star } from "lucide-astro";
 import type { Product } from "../data/products";
 
 export interface Props {
@@ -46,11 +46,7 @@ const waLink = `https://wa.me/6281234567890?text=${encodeURIComponent(`Halo Guda
                 </div>
             )
         }
-        <button
-            class="absolute top-5 right-5 p-3 bg-white/90 backdrop-blur-md rounded-2xl text-slate-300 hover:text-rose-500 transition-all shadow-sm transform hover:scale-110"
-        >
-            <Heart class="w-5 h-5" />
-        </button>
+
         <div
             class="absolute inset-x-5 bottom-5 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500"
         >

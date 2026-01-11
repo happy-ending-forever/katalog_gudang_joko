@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
@@ -93,34 +97,5 @@ body {
   to {
     transform: translateX(-20px);
     opacity: 0;
-  }
-}
-
-/* Definisi View Transition */
-::view-transition-old(root) {
-  animation: 150ms ease-out fade-out;
-}
-
-::view-transition-new(root) {
-  animation: 200ms ease-in fade-in;
-}
-
-/* Transisi lebih halus untuk konten utama */
-::view-transition-old(main-content) {
-  animation: 150ms ease-out slide-to-left;
-}
-
-::view-transition-new(main-content) {
-  animation: 200ms ease-in slide-from-right;
-}
-
-/* Reduce motion untuk aksesibilitas */
-@media (prefers-reduced-motion: reduce) {
-
-  ::view-transition-old(root),
-  ::view-transition-new(root),
-  ::view-transition-old(main-content),
-  ::view-transition-new(main-content) {
-    animation: none;
   }
 }

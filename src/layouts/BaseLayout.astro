@@ -1,6 +1,5 @@
 ---
 import "../styles/global.css";
-import { ViewTransitions } from "astro:transitions";
 
 export interface Props {
   title: string;
@@ -20,7 +19,9 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <title>{title}</title>
-    <!-- Preconnect untuk resources eksternal -->
+    <!-- DNS Prefetch dan Preconnect untuk resources eksternal -->
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
@@ -74,8 +75,6 @@ const {
         }
       }
     </style>
-
-    <ViewTransitions />
   </head>
   <body class="bg-slate-50 text-slate-800">
     <slot />

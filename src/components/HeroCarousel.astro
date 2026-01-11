@@ -21,9 +21,10 @@ import { promos } from "../data/promos";
                         src={promo.image}
                         alt={promo.title}
                         class="w-full h-full object-cover"
+                        style={i === 0 ? "will-change: transform;" : ""}
                         loading={i === 0 ? "eager" : "lazy"}
                         fetchpriority={i === 0 ? "high" : "low"}
-                        decoding="async"
+                        decoding={i === 0 ? "sync" : "async"}
                     />
                     <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-6 md:p-10 pt-16 md:pt-20">
                         <p class="text-white font-black text-lg md:text-2xl tracking-tight">
@@ -110,8 +111,16 @@ import { promos } from "../data/promos";
             clearInterval(carouselInterval);
         }
 
-        // Auto-advance
-        carouselInterval = setInterval(nextSlide, 5000);
+        // Defer auto-advance to after first paint
+        const startAutoAdvance = () => {
+            carouselInterval = setInterval(nextSlide, 5000);
+        };
+
+        if ("requestIdleCallback" in window) {
+            requestIdleCallback(startAutoAdvance);
+        } else {
+            setTimeout(startAutoAdvance, 100);
+        }
 
         // Button controls - clone to remove old listeners
         const nextBtn = document.getElementById("carousel-next");
@@ -143,7 +152,6 @@ import { promos } from "../data/promos";
         });
     }
 
-    // Run on initial load and after each View Transition
+    // Run on page load
     initCarousel();
-    document.addEventListener("astro:page-load", initCarousel);
 </script>
