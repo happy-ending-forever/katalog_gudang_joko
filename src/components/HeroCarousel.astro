@@ -70,56 +70,80 @@ import { promos } from "../data/promos";
 </div>
 
 <script define:vars={{ totalSlides: promos.length }}>
-    let currentSlide = 0;
+    let carouselInterval = null;
 
-    function updateCarousel() {
-        const slides = document.querySelectorAll(".carousel-slide");
-        const dots = document.querySelectorAll(".carousel-dot");
+    function initCarousel() {
+        let currentSlide = 0;
 
-        slides.forEach((slide, i) => {
-            if (slide instanceof HTMLElement) {
-                slide.style.opacity = i === currentSlide ? "1" : "0";
-                slide.style.zIndex = i === currentSlide ? "10" : "0";
-            }
-        });
+        function updateCarousel() {
+            const slides = document.querySelectorAll(".carousel-slide");
+            const dots = document.querySelectorAll(".carousel-dot");
 
-        dots.forEach((dot, i) => {
-            dot.className =
-                i === currentSlide
-                    ? "carousel-dot h-1 md:h-1.5 w-6 md:w-8 bg-white rounded-full transition-all"
-                    : "carousel-dot h-1 md:h-1.5 w-1.5 md:w-2 bg-white/40 rounded-full transition-all";
+            slides.forEach((slide, i) => {
+                if (slide instanceof HTMLElement) {
+                    slide.style.opacity = i === currentSlide ? "1" : "0";
+                    slide.style.zIndex = i === currentSlide ? "10" : "0";
+                }
+            });
+
+            dots.forEach((dot, i) => {
+                dot.className =
+                    i === currentSlide
+                        ? "carousel-dot h-1 md:h-1.5 w-6 md:w-8 bg-white rounded-full transition-all"
+                        : "carousel-dot h-1 md:h-1.5 w-1.5 md:w-2 bg-white/40 rounded-full transition-all";
+            });
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            updateCarousel();
+        }
+
+        function prevSlide() {
+            currentSlide =
+                currentSlide === 0 ? totalSlides - 1 : currentSlide - 1;
+            updateCarousel();
+        }
+
+        // Clear previous interval if exists
+        if (carouselInterval) {
+            clearInterval(carouselInterval);
+        }
+
+        // Auto-advance
+        carouselInterval = setInterval(nextSlide, 5000);
+
+        // Button controls - clone to remove old listeners
+        const nextBtn = document.getElementById("carousel-next");
+        const prevBtn = document.getElementById("carousel-prev");
+
+        if (nextBtn) {
+            const newNextBtn = nextBtn.cloneNode(true);
+            nextBtn.parentNode?.replaceChild(newNextBtn, nextBtn);
+            newNextBtn.addEventListener("click", nextSlide);
+        }
+
+        if (prevBtn) {
+            const newPrevBtn = prevBtn.cloneNode(true);
+            prevBtn.parentNode?.replaceChild(newPrevBtn, prevBtn);
+            newPrevBtn.addEventListener("click", prevSlide);
+        }
+
+        // Dot controls - clone to remove old listeners
+        document.querySelectorAll(".carousel-dot").forEach((dot) => {
+            const newDot = dot.cloneNode(true);
+            dot.parentNode?.replaceChild(newDot, dot);
+            newDot.addEventListener("click", (e) => {
+                const target = e.currentTarget;
+                if (target instanceof HTMLElement) {
+                    currentSlide = parseInt(target.dataset.index || "0");
+                    updateCarousel();
+                }
+            });
         });
     }
 
-    function nextSlide() {
-        currentSlide = (currentSlide + 1) % totalSlides;
-        updateCarousel();
-    }
-
-    function prevSlide() {
-        currentSlide = currentSlide === 0 ? totalSlides - 1 : currentSlide - 1;
-        updateCarousel();
-    }
-
-    // Auto-advance
-    setInterval(nextSlide, 5000);
-
-    // Button controls
-    document
-        .getElementById("carousel-next")
-        ?.addEventListener("click", nextSlide);
-    document
-        .getElementById("carousel-prev")
-        ?.addEventListener("click", prevSlide);
-
-    // Dot controls
-    document.querySelectorAll(".carousel-dot").forEach((dot) => {
-        dot.addEventListener("click", (e) => {
-            const target = e.currentTarget;
-            if (target instanceof HTMLElement) {
-                currentSlide = parseInt(target.dataset.index || "0");
-                updateCarousel();
-            }
-        });
-    });
+    // Run on initial load and after each View Transition
+    initCarousel();
+    document.addEventListener("astro:page-load", initCarousel);
 </script>

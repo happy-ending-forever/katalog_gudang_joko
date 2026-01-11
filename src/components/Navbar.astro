@@ -110,23 +110,43 @@ const navLinks = [
 </nav>
 
 <script>
-    const menuToggle = document.getElementById("menu-toggle");
-    const mobileMenu = document.getElementById("mobile-menu");
-    const menuIconOpen = document.getElementById("menu-icon-open");
-    const menuIconClose = document.getElementById("menu-icon-close");
+    function initMobileMenu() {
+        const menuToggle = document.getElementById("menu-toggle");
+        const mobileMenu = document.getElementById("mobile-menu");
+        const menuIconOpen = document.getElementById("menu-icon-open");
+        const menuIconClose = document.getElementById("menu-icon-close");
 
-    let isMenuOpen = false;
+        let isMenuOpen = false;
 
-    menuToggle?.addEventListener("click", () => {
-        isMenuOpen = !isMenuOpen;
-        if (isMenuOpen) {
-            mobileMenu?.classList.remove("hidden");
-            menuIconOpen?.classList.add("hidden");
-            menuIconClose?.classList.remove("hidden");
-        } else {
-            mobileMenu?.classList.add("hidden");
-            menuIconOpen?.classList.remove("hidden");
-            menuIconClose?.classList.add("hidden");
+        // Remove previous event listeners by cloning the element
+        if (menuToggle) {
+            const newMenuToggle = menuToggle.cloneNode(true);
+            menuToggle.parentNode?.replaceChild(newMenuToggle, menuToggle);
+
+            newMenuToggle.addEventListener("click", () => {
+                isMenuOpen = !isMenuOpen;
+                if (isMenuOpen) {
+                    mobileMenu?.classList.remove("hidden");
+                    document
+                        .getElementById("menu-icon-open")
+                        ?.classList.add("hidden");
+                    document
+                        .getElementById("menu-icon-close")
+                        ?.classList.remove("hidden");
+                } else {
+                    mobileMenu?.classList.add("hidden");
+                    document
+                        .getElementById("menu-icon-open")
+                        ?.classList.remove("hidden");
+                    document
+                        .getElementById("menu-icon-close")
+                        ?.classList.add("hidden");
+                }
+            });
         }
-    });
+    }
+
+    // Run on initial load and after each View Transition
+    initMobileMenu();
+    document.addEventListener("astro:page-load", initMobileMenu);
 </script>
