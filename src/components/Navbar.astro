@@ -1,0 +1,132 @@
+---
+import { MessageCircle, Search, Menu, X } from "lucide-astro";
+
+export interface Props {
+    currentPage?: string;
+}
+
+const { currentPage = "home" } = Astro.props;
+
+const navLinks = [
+    { id: "home", href: "/", label: "Beranda" },
+    { id: "about", href: "/about", label: "Tentang Kami" },
+    { id: "marketplace", href: "/marketplace", label: "Marketplace" },
+    { id: "promo", href: "/promo", label: "Promo" },
+];
+---
+
+<nav
+    class="sticky top-0 z-50 bg-white/80 backdrop-blur-md shadow-sm border-b border-blue-100"
+>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-20">
+            <!-- Logo -->
+            <a href="/" class="flex items-center gap-2 cursor-pointer">
+                <div
+                    class="bg-blue-600 p-2 rounded-xl shadow-lg shadow-blue-200"
+                >
+                    <MessageCircle class="text-white w-6 h-6" />
+                </div>
+                <span
+                    class="text-2xl font-black bg-gradient-to-r from-blue-700 to-blue-500 bg-clip-text text-transparent tracking-tight whitespace-nowrap"
+                    >Gudang Joko</span
+                >
+            </a>
+
+            <!-- Desktop Navigation -->
+            <div class="hidden md:flex items-center space-x-8">
+                {
+                    navLinks.map((link) => (
+                        <a
+                            href={link.href}
+                            class:list={[
+                                "font-medium transition-colors",
+                                currentPage === link.id
+                                    ? "font-bold text-blue-600 border-b-2 border-blue-600 pb-1"
+                                    : "text-slate-500 hover:text-blue-600",
+                            ]}
+                        >
+                            {link.label}
+                        </a>
+                    ))
+                }
+                <a
+                    href="#main-footer"
+                    class="font-medium text-slate-500 hover:text-blue-600 transition-colors"
+                    >Contact</a
+                >
+            </div>
+
+            <!-- Search -->
+            <div class="hidden md:flex items-center">
+                <div class="relative group">
+                    <input
+                        type="text"
+                        id="desktop-search"
+                        placeholder="Cari gadget..."
+                        class="pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl w-48 transition-all group-hover:w-64 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:bg-white"
+                    />
+                    <Search
+                        class="absolute left-3.5 top-3 text-slate-400 w-4 h-4"
+                    />
+                </div>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <div class="md:hidden flex items-center">
+                <button id="menu-toggle" class="p-2 text-slate-600 rounded-lg">
+                    <Menu id="menu-icon-open" class="w-6 h-6" />
+                    <X id="menu-icon-close" class="w-6 h-6 hidden" />
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- Mobile Menu Overlay -->
+    <div
+        id="mobile-menu"
+        class="hidden md:hidden bg-white border-t border-slate-100 p-6 space-y-4 shadow-xl"
+    >
+        <div class="flex flex-col space-y-3 font-bold">
+            {
+                navLinks.map((link) => (
+                    <a
+                        href={link.href}
+                        class:list={[
+                            "text-left py-2",
+                            currentPage === link.id
+                                ? "text-blue-600"
+                                : "text-slate-600",
+                        ]}
+                    >
+                        {link.label}
+                    </a>
+                ))
+            }
+            <a href="#main-footer" class="text-left py-2 text-slate-600"
+                >Contact</a
+            >
+        </div>
+    </div>
+</nav>
+
+<script>
+    const menuToggle = document.getElementById("menu-toggle");
+    const mobileMenu = document.getElementById("mobile-menu");
+    const menuIconOpen = document.getElementById("menu-icon-open");
+    const menuIconClose = document.getElementById("menu-icon-close");
+
+    let isMenuOpen = false;
+
+    menuToggle?.addEventListener("click", () => {
+        isMenuOpen = !isMenuOpen;
+        if (isMenuOpen) {
+            mobileMenu?.classList.remove("hidden");
+            menuIconOpen?.classList.add("hidden");
+            menuIconClose?.classList.remove("hidden");
+        } else {
+            mobileMenu?.classList.add("hidden");
+            menuIconOpen?.classList.remove("hidden");
+            menuIconClose?.classList.add("hidden");
+        }
+    });
+</script>

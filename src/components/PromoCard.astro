@@ -1,0 +1,61 @@
+---
+import { Percent } from "lucide-astro";
+import type { Promo } from "../data/promos";
+
+export interface Props {
+    promo: Promo;
+}
+
+const { promo } = Astro.props;
+
+const waLink = `https://wa.me/6281234567890?text=${encodeURIComponent(`Halo Admin, saya mau klaim promo ${promo.title}`)}`;
+---
+
+<div
+    class="bg-white rounded-[2rem] md:rounded-[2.5rem] overflow-hidden shadow-sm border border-slate-100 hover:shadow-xl transition-all group"
+>
+    <div class={`h-40 md:h-48 bg-gradient-to-br ${promo.color} relative p-6`}>
+        <Percent class="absolute top-0 right-0 opacity-10 w-24 h-24" />
+        <div class="relative z-10 text-white space-y-1 md:space-y-2">
+            <span
+                class="text-[10px] font-black uppercase tracking-widest bg-white/20 px-2 py-1 rounded border border-white/20"
+                >Voucher</span
+            >
+            <h4
+                class="text-xl md:text-2xl font-black leading-tight line-clamp-2"
+            >
+                {promo.title}
+            </h4>
+        </div>
+    </div>
+    <div class="p-6 md:p-8 space-y-4 md:space-y-6 text-center md:text-left">
+        <p
+            class="text-slate-500 font-medium text-xs md:text-sm leading-relaxed"
+        >
+            {promo.description}
+        </p>
+        <div
+            class="flex items-center justify-between py-3 px-4 bg-slate-50 rounded-xl border border-dashed border-slate-300"
+        >
+            <span class="text-[10px] font-bold text-slate-400">KODE</span>
+            <span
+                class="text-base md:text-lg font-black text-blue-600 tracking-widest uppercase"
+                >{promo.code}</span
+            >
+        </div>
+        <div
+            class="flex items-center justify-between text-[10px] font-bold uppercase tracking-tight"
+        >
+            <span class="text-slate-400">Berlaku sampai:</span>
+            <span class="text-slate-800">{promo.validUntil}</span>
+        </div>
+        <a
+            href={waLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="block w-full bg-slate-900 text-white text-center py-3.5 md:py-4 rounded-2xl font-black hover:bg-green-600 transition-all shadow-lg active:scale-95"
+        >
+            Gunakan Promo
+        </a>
+    </div>
+</div>

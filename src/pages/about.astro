@@ -1,0 +1,169 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Navbar from "../components/Navbar.astro";
+import Footer from "../components/Footer.astro";
+import FloatingWAButton from "../components/FloatingWAButton.astro";
+import TestimonialCard from "../components/TestimonialCard.astro";
+import { testimonials } from "../data/testimonials";
+import { ChevronLeft, Award, MapPin, Clock } from "lucide-astro";
+---
+
+<BaseLayout title="Tentang Kami - Gudang Joko">
+    <Navbar currentPage="about" />
+
+    <main class="max-w-7xl mx-auto px-4 py-12 fade-in">
+        <div class="flex flex-col gap-16">
+            <!-- Header -->
+            <div class="space-y-4 text-center md:text-left">
+                <a
+                    href="/"
+                    class="text-slate-400 font-bold hover:text-blue-600 flex items-center gap-1 text-sm justify-center md:justify-start"
+                >
+                    <ChevronLeft class="w-4 h-4" /> Kembali ke Beranda
+                </a>
+                <h2
+                    class="text-3xl md:text-4xl font-black text-slate-900 tracking-tight"
+                >
+                    Tentang Gudang Joko
+                </h2>
+                <p class="text-slate-500 font-medium text-base md:text-lg">
+                    Mengenal lebih dekat toko gadget pilihan keluarga Anda.
+                </p>
+            </div>
+
+            <!-- About Story -->
+            <div
+                class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12 items-center"
+            >
+                <div
+                    class="space-y-6 text-center md:text-left order-2 md:order-1"
+                >
+                    <div
+                        class="inline-flex items-center gap-2 bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest mx-auto md:mx-0"
+                    >
+                        <Award class="w-3.5 h-3.5" /> Sejak 2020
+                    </div>
+                    <h3
+                        class="text-2xl md:text-3xl font-black text-slate-900 tracking-tight leading-tight"
+                    >
+                        Perjalanan Bang Joko Membangun Gudang Terpercaya
+                    </h3>
+                    <p
+                        class="text-sm md:text-base text-slate-500 leading-relaxed font-medium"
+                    >
+                        Berawal dari ruko kecil di Jakarta Selatan, Bang Joko
+                        memiliki visi untuk menyediakan gadget berkualitas
+                        dengan harga yang jujur. Kami percaya teknologi harus
+                        bisa diakses semua orang.
+                    </p>
+                    <div class="grid grid-cols-2 gap-4 md:gap-6 pt-2">
+                        <div
+                            class="p-4 bg-white rounded-2xl border border-slate-100 shadow-sm text-center"
+                        >
+                            <p
+                                class="text-2xl md:text-3xl font-black text-blue-600"
+                            >
+                                5000+
+                            </p>
+                            <p
+                                class="text-[10px] font-bold text-slate-400 uppercase tracking-widest"
+                            >
+                                Pelanggan
+                            </p>
+                        </div>
+                        <div
+                            class="p-4 bg-white rounded-2xl border border-slate-100 shadow-sm text-center"
+                        >
+                            <p
+                                class="text-2xl md:text-3xl font-black text-blue-600"
+                            >
+                                100%
+                            </p>
+                            <p
+                                class="text-[10px] font-bold text-slate-400 uppercase tracking-widest"
+                            >
+                                Original
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="relative order-1 md:order-2">
+                    <div
+                        class="bg-blue-100 rounded-[2.5rem] md:rounded-[3rem] p-3 md:p-4 rotate-2 transform"
+                    >
+                        <img
+                            src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&q=80"
+                            alt="Store"
+                            class="rounded-[2rem] md:rounded-[2.5rem] shadow-2xl w-full h-64 md:h-auto object-cover"
+                            loading="lazy"
+                        />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Testimonials -->
+            <div class="space-y-10">
+                <div class="text-center">
+                    <h3
+                        class="text-2xl md:text-3xl font-black text-slate-900 tracking-tight"
+                    >
+                        Apa Kata Mereka?
+                    </h3>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+                    {
+                        testimonials.map((testimonial) => (
+                            <TestimonialCard testimonial={testimonial} />
+                        ))
+                    }
+                </div>
+            </div>
+
+            <!-- Map Section -->
+            <div class="space-y-8">
+                <div class="text-center md:text-left">
+                    <h3
+                        class="text-2xl md:text-3xl font-black text-slate-900 tracking-tight flex items-center gap-3 justify-center md:justify-start"
+                    >
+                        <MapPin class="text-rose-500" /> Kunjungi Toko Kami
+                    </h3>
+                    <p class="text-slate-500 font-medium mt-2 text-sm">
+                        Datang langsung untuk cek kondisi barang sepuasnya.
+                    </p>
+                </div>
+                <div
+                    class="w-full h-[300px] md:h-[400px] bg-slate-200 rounded-[2rem] md:rounded-[3rem] overflow-hidden border-4 md:border-8 border-white shadow-2xl relative"
+                >
+                    <iframe
+                        class="w-full h-full grayscale-[0.2]"
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126906.18341604085!2d106.7725925!3d-6.2238356!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f3e099616d0d%3A0x6331a9829f074d20!2sJakarta%20Selatan%2C%20Kota%20Jakarta%20Selatan%2C%20Daerah%20Khusus%20Ibukota%20Jakarta!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid"
+                        style="border:0"
+                        loading="lazy"
+                        title="Lokasi Gudang Joko"></iframe>
+                    <div
+                        class="absolute bottom-4 left-4 right-4 md:right-auto md:left-6 bg-white p-4 md:p-6 rounded-2xl shadow-xl border border-slate-100"
+                    >
+                        <p
+                            class="font-black text-slate-900 text-sm md:text-base"
+                        >
+                            Gudang Joko Pusat
+                        </p>
+                        <p
+                            class="text-[10px] md:text-xs text-slate-500 mb-2 md:mb-4"
+                        >
+                            Pasar Modern Blok A Kav. 12, Jakarta Selatan
+                        </p>
+                        <div
+                            class="flex items-center gap-2 text-blue-600 font-bold text-[10px] md:text-xs uppercase tracking-widest"
+                        >
+                            <Clock class="w-3 h-3" /> Buka: 09.00 - 21.00 WIB
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <Footer />
+    <FloatingWAButton />
+</BaseLayout>

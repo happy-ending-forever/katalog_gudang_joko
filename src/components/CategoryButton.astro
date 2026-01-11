@@ -1,0 +1,50 @@
+---
+import {
+    LayoutGrid,
+    Smartphone,
+    Headphones,
+    Monitor,
+    Camera,
+    Watch,
+    MousePointer2,
+} from "lucide-astro";
+import type { Category } from "../data/categories";
+
+export interface Props {
+    category: Category;
+    isActive?: boolean;
+    href?: string;
+}
+
+const { category, isActive = false, href } = Astro.props;
+
+const iconMap: Record<string, any> = {
+    "layout-grid": LayoutGrid,
+    smartphone: Smartphone,
+    headphones: Headphones,
+    monitor: Monitor,
+    camera: Camera,
+    watch: Watch,
+    "mouse-pointer-2": MousePointer2,
+};
+
+const IconComponent = iconMap[category.icon] || LayoutGrid;
+const linkHref = href || `/marketplace?category=${category.name}`;
+---
+
+<a
+    href={linkHref}
+    class:list={[
+        "flex items-center gap-2 px-5 py-3 rounded-xl transition-all border-2 whitespace-nowrap active:scale-95",
+        isActive
+            ? "bg-blue-600 border-blue-600 text-white shadow-lg"
+            : "bg-white border-white text-slate-600 hover:border-blue-100 shadow-sm",
+    ]}
+>
+    <IconComponent
+        class:list={["w-4 h-4", isActive ? "text-white" : "text-blue-500"]}
+    />
+    <span class="font-bold text-xs uppercase tracking-wider"
+        >{category.name}</span
+    >
+</a>

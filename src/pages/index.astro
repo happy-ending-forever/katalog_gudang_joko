@@ -1,0 +1,129 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Navbar from "../components/Navbar.astro";
+import Footer from "../components/Footer.astro";
+import FloatingWAButton from "../components/FloatingWAButton.astro";
+import HeroCarousel from "../components/HeroCarousel.astro";
+import ProductCard from "../components/ProductCard.astro";
+import CategoryButton from "../components/CategoryButton.astro";
+import { products } from "../data/products";
+import { categories } from "../data/categories";
+import { ArrowRight } from "lucide-astro";
+---
+
+<BaseLayout title="Gudang Joko - Katalog Gadget Terlengkap">
+    <Navbar currentPage="home" />
+
+    <main id="app-content" class="fade-in">
+        <!-- Hero Section -->
+        <section class="relative overflow-hidden bg-white py-8 md:py-24">
+            <div
+                class="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-blue-100 rounded-full blur-3xl opacity-50"
+            >
+            </div>
+            <div
+                class="relative max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-8 md:gap-0"
+            >
+                <div
+                    class="md:w-1/2 space-y-4 md:space-y-8 text-center md:text-left z-10"
+                >
+                    <div
+                        class="inline-flex items-center gap-2 bg-blue-50 text-blue-700 px-4 py-2 rounded-full text-[10px] md:text-sm font-bold border border-blue-100"
+                    >
+                        <span
+                            class="flex h-2 w-2 rounded-full bg-blue-600 animate-pulse"
+                        ></span> Stok Baru Hari Ini
+                    </div>
+                    <h1
+                        class="text-4xl md:text-7xl font-black text-slate-900 leading-[1.1] tracking-tight"
+                    >
+                        Gudang Joko <br /><span class="text-blue-600"
+                            >Terkini Terlengkap</span
+                        >
+                    </h1>
+                    <p
+                        class="text-sm md:text-lg text-slate-500 font-medium px-4 md:px-0"
+                    >
+                        Beli gadget idaman tanpa ribet. Harga jujur, unit
+                        berkualitas, pesan langsung lewat WhatsApp Bang Joko.
+                    </p>
+                    <div
+                        class="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center md:justify-start px-6 md:px-0"
+                    >
+                        <a
+                            href="/marketplace"
+                            class="bg-blue-600 text-white px-8 py-3.5 md:px-10 md:py-4 rounded-2xl font-black shadow-xl shadow-blue-200 transition-all transform hover:-translate-y-1 active:scale-95 text-center"
+                        >
+                            Lihat Katalog
+                        </a>
+                        <a
+                            href="/promo"
+                            class="bg-white text-slate-700 border-2 border-slate-100 px-8 py-3.5 md:px-10 md:py-4 rounded-2xl font-black hover:bg-slate-50 active:scale-95 text-center"
+                        >
+                            Cek Promo
+                        </a>
+                    </div>
+                </div>
+                <HeroCarousel />
+            </div>
+        </section>
+
+        <!-- Categories Section -->
+        <section class="bg-slate-50 py-12">
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="mb-8 text-center md:text-left">
+                    <h2
+                        class="text-2xl font-black text-slate-900 tracking-tight"
+                    >
+                        Pilih Kategori Gadget
+                    </h2>
+                    <p class="text-slate-500 font-medium text-sm md:text-base">
+                        Klik untuk melihat koleksi lengkap kami
+                    </p>
+                </div>
+                <div
+                    class="flex overflow-x-auto pb-4 gap-4 no-scrollbar justify-start"
+                >
+                    {categories.map((cat) => <CategoryButton category={cat} />)}
+                </div>
+            </div>
+        </section>
+
+        <!-- Products Section -->
+        <section class="max-w-7xl mx-auto px-4 py-12">
+            <div
+                class="flex flex-col sm:flex-row justify-between items-end gap-4 border-b border-slate-200 pb-8 mb-12"
+            >
+                <div class="w-full sm:w-auto text-center sm:text-left">
+                    <span
+                        class="text-blue-600 font-black uppercase text-xs tracking-[0.2em] mb-2 block"
+                        >Display Produk</span
+                    >
+                    <h2
+                        class="text-3xl md:text-4xl font-black text-slate-900 tracking-tight"
+                    >
+                        Rekomendasi Pekan Ini
+                    </h2>
+                </div>
+                <a
+                    href="/marketplace"
+                    class="flex items-center gap-2 text-blue-600 font-black hover:gap-3 transition-all text-sm md:text-base"
+                >
+                    Lihat Semua <ArrowRight class="w-5 h-5" />
+                </a>
+            </div>
+            <div
+                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6"
+            >
+                {
+                    products
+                        .slice(0, 5)
+                        .map((product) => <ProductCard product={product} />)
+                }
+            </div>
+        </section>
+    </main>
+
+    <Footer />
+    <FloatingWAButton />
+</BaseLayout>

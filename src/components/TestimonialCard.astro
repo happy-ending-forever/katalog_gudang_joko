@@ -1,0 +1,45 @@
+---
+import { Quote, Star } from "lucide-astro";
+import type { Testimonial } from "../data/testimonials";
+
+export interface Props {
+    testimonial: Testimonial;
+}
+
+const { testimonial } = Astro.props;
+---
+
+<div
+    class="bg-white p-6 md:p-8 rounded-[2rem] md:rounded-[2.5rem] border border-slate-100 shadow-sm relative group"
+>
+    <Quote class="absolute top-6 right-8 text-blue-50 w-12 h-12" />
+    <div class="flex text-amber-400 mb-4">
+        {
+            Array.from({ length: testimonial.rating }).map(() => (
+                <Star class="w-3.5 h-3.5 fill-current" />
+            ))
+        }
+    </div>
+    <p
+        class="text-sm md:text-base text-slate-600 font-medium italic mb-6 relative z-10 leading-relaxed"
+    >
+        "{testimonial.content}"
+    </p>
+    <div class="flex items-center gap-3">
+        <div
+            class="w-10 h-10 md:w-12 md:h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-black text-sm md:text-lg uppercase"
+        >
+            {testimonial.name[0]}
+        </div>
+        <div>
+            <p class="font-bold text-slate-900 text-sm md:text-base">
+                {testimonial.name}
+            </p>
+            <p
+                class="text-[10px] text-slate-400 font-bold uppercase tracking-widest"
+            >
+                {testimonial.role}
+            </p>
+        </div>
+    </div>
+</div>

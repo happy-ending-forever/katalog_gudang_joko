@@ -1,0 +1,252 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Navbar from "../components/Navbar.astro";
+import Footer from "../components/Footer.astro";
+import FloatingWAButton from "../components/FloatingWAButton.astro";
+import ProductCard from "../components/ProductCard.astro";
+import { products } from "../data/products";
+import { categories } from "../data/categories";
+import {
+    ChevronLeft,
+    Search,
+    LayoutGrid,
+    Smartphone,
+    Headphones,
+    Monitor,
+    Camera,
+    Watch,
+    MousePointer2,
+} from "lucide-astro";
+---
+
+<BaseLayout title="Marketplace - Gudang Joko">
+    <Navbar currentPage="marketplace" />
+
+    <main class="max-w-7xl mx-auto px-4 py-12 fade-in">
+        <div class="flex flex-col gap-10">
+            <div class="space-y-4">
+                <a
+                    href="/"
+                    class="text-slate-400 font-bold hover:text-blue-600 flex items-center gap-1 text-sm"
+                >
+                    <ChevronLeft class="w-4 h-4" /> Kembali ke Beranda
+                </a>
+                <h2
+                    class="text-3xl md:text-4xl font-black text-slate-900 tracking-tight"
+                >
+                    Marketplace Lengkap
+                </h2>
+                <p class="text-slate-500 font-medium">
+                    Menjelajahi seluruh stok tersedia di Gudang Joko
+                </p>
+            </div>
+
+            <div class="space-y-6">
+                <div
+                    class="flex items-center gap-3 bg-white p-2 rounded-2xl border border-slate-200 shadow-sm w-full md:w-max"
+                >
+                    <div class="relative flex-1 md:w-80">
+                        <Search
+                            class="absolute left-3.5 top-3 text-slate-400 w-4 h-4"
+                        />
+                        <input
+                            type="text"
+                            id="search-input"
+                            placeholder="Cari nama produk..."
+                            class="w-full pl-10 pr-4 py-2 bg-transparent focus:outline-none font-medium text-sm"
+                        />
+                    </div>
+                </div>
+                <div
+                    id="category-buttons"
+                    class="flex overflow-x-auto pb-4 gap-3 no-scrollbar justify-start"
+                >
+                    {
+                        categories.map((cat) => (
+                            <button
+                                data-category={cat.name}
+                                class="category-btn flex items-center gap-2 px-5 py-3 rounded-xl transition-all border-2 whitespace-nowrap active:scale-95 bg-white border-white text-slate-600 hover:border-blue-100 shadow-sm"
+                            >
+                                {cat.icon === "layout-grid" && (
+                                    <LayoutGrid class="w-4 h-4 text-blue-500 cat-icon" />
+                                )}
+                                {cat.icon === "smartphone" && (
+                                    <Smartphone class="w-4 h-4 text-blue-500 cat-icon" />
+                                )}
+                                {cat.icon === "headphones" && (
+                                    <Headphones class="w-4 h-4 text-blue-500 cat-icon" />
+                                )}
+                                {cat.icon === "monitor" && (
+                                    <Monitor class="w-4 h-4 text-blue-500 cat-icon" />
+                                )}
+                                {cat.icon === "camera" && (
+                                    <Camera class="w-4 h-4 text-blue-500 cat-icon" />
+                                )}
+                                {cat.icon === "watch" && (
+                                    <Watch class="w-4 h-4 text-blue-500 cat-icon" />
+                                )}
+                                {cat.icon === "mouse-pointer-2" && (
+                                    <MousePointer2 class="w-4 h-4 text-blue-500 cat-icon" />
+                                )}
+                                <span class="font-bold text-xs uppercase tracking-wider">
+                                    {cat.name}
+                                </span>
+                            </button>
+                        ))
+                    }
+                </div>
+            </div>
+
+            <div
+                id="product-grid"
+                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-12"
+            >
+                {
+                    products.map((product) => (
+                        <div
+                            data-category={product.category}
+                            class="product-card"
+                        >
+                            <ProductCard product={product} />
+                        </div>
+                    ))
+                }
+            </div>
+
+            <div
+                id="no-products"
+                class="hidden col-span-full py-20 text-center bg-white rounded-[3rem] border-2 border-dashed border-slate-200 font-black"
+            >
+                Produk tidak ditemukan
+            </div>
+        </div>
+    </main>
+
+    <Footer />
+    <FloatingWAButton />
+</BaseLayout>
+
+<script is:inline>
+    (function () {
+        // Get current category from URL
+        function getActiveCategory() {
+            var params = new URLSearchParams(window.location.search);
+            return params.get("category") || "Semua";
+        }
+
+        // Filter products based on category
+        function filterProducts(category) {
+            var productCards = document.querySelectorAll(".product-card");
+            var noProducts = document.getElementById("no-products");
+            var visibleCount = 0;
+
+            productCards.forEach(function (card) {
+                var cardCategory = card.dataset.category;
+                if (category === "Semua" || cardCategory === category) {
+                    card.style.display = "";
+                    visibleCount++;
+                } else {
+                    card.style.display = "none";
+                }
+            });
+
+            if (noProducts) {
+                noProducts.style.display =
+                    visibleCount === 0 ? "block" : "none";
+            }
+        }
+
+        // Update active button styling
+        function updateActiveButton(category) {
+            var buttons = document.querySelectorAll(".category-btn");
+            buttons.forEach(function (btn) {
+                var btnCategory = btn.dataset.category;
+                var icon = btn.querySelector(".cat-icon");
+
+                if (btnCategory === category) {
+                    btn.className =
+                        "category-btn flex items-center gap-2 px-5 py-3 rounded-xl transition-all border-2 whitespace-nowrap active:scale-95 bg-blue-600 border-blue-600 text-white shadow-lg";
+                    if (icon) icon.className = "w-4 h-4 text-white cat-icon";
+                } else {
+                    btn.className =
+                        "category-btn flex items-center gap-2 px-5 py-3 rounded-xl transition-all border-2 whitespace-nowrap active:scale-95 bg-white border-white text-slate-600 hover:border-blue-100 shadow-sm";
+                    if (icon) icon.className = "w-4 h-4 text-blue-500 cat-icon";
+                }
+            });
+        }
+
+        // Handle category button clicks
+        function setupCategoryButtons() {
+            var buttons = document.querySelectorAll(".category-btn");
+            buttons.forEach(function (btn) {
+                btn.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    var category = btn.dataset.category || "Semua";
+
+                    // Update URL without reload
+                    var url = new URL(window.location.href);
+                    url.searchParams.set("category", category);
+                    window.history.pushState({}, "", url);
+
+                    // Apply filter
+                    filterProducts(category);
+                    updateActiveButton(category);
+                });
+            });
+        }
+
+        // Handle search input
+        function setupSearch() {
+            var searchInput = document.getElementById("search-input");
+            if (!searchInput) return;
+
+            searchInput.addEventListener("input", function (e) {
+                var searchTerm = e.target.value.toLowerCase();
+                var productCards = document.querySelectorAll(".product-card");
+                var noProducts = document.getElementById("no-products");
+                var visibleCount = 0;
+                var currentCategory = getActiveCategory();
+
+                productCards.forEach(function (card) {
+                    var productName = card.querySelector("h3");
+                    var productText = productName
+                        ? productName.textContent.toLowerCase()
+                        : "";
+                    var cardCategory = card.dataset.category;
+                    var matchesSearch = productText.includes(searchTerm);
+                    var matchesCategory =
+                        currentCategory === "Semua" ||
+                        cardCategory === currentCategory;
+
+                    if (matchesSearch && matchesCategory) {
+                        card.style.display = "";
+                        visibleCount++;
+                    } else {
+                        card.style.display = "none";
+                    }
+                });
+
+                if (noProducts) {
+                    noProducts.style.display =
+                        visibleCount === 0 ? "block" : "none";
+                }
+            });
+        }
+
+        // Initialize
+        function init() {
+            var activeCategory = getActiveCategory();
+            filterProducts(activeCategory);
+            updateActiveButton(activeCategory);
+            setupCategoryButtons();
+            setupSearch();
+        }
+
+        // Run when DOM is ready
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", init);
+        } else {
+            init();
+        }
+    })();
+</script>
